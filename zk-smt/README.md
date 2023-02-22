@@ -1,5 +1,9 @@
 # ZK-SMT (ZK Sparse Merkle Tree)
 
+![ZK-SMT](https://user-images.githubusercontent.com/5776910/220498388-05c85e7e-5b9b-4a6b-850a-f8830e3b27f9.jpg)
+
+## Circuit
+
 ```circom
 component main = SMTVerifier(N);
 ```
