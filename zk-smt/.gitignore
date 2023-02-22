@@ -1,0 +1,18 @@
+# MPC ceremony
+*.ptau
+challenge_0003
+response_0003
+
+# circuits
+*.wtns
+*.r1cs
+*.sym
+*.zkey
+circuit_js/
+
+# proofs
+input.json
+proof.json
+verification_key.json
+
+node_modules
