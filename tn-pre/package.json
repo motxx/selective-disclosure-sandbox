@@ -1,0 +1,55 @@
+{
+  "name": "nucypher-ts-demo",
+  "author": "Piotr Roslaniec <p.roslaniec@gmail.com>",
+  "version": "0.1.0",
+  "private": false,
+  "license": "MIT",
+  "scripts": {
+    "start": "webpack serve --mode development",
+    "build": "./node_modules/typescript/bin/tsc --noEmit && rimraf build && webpack --mode production --progress",
+    "lint": "yarn lint:prettier --check && yarn lint:eslint",
+    "fix": "yarn lint:prettier --write && yarn lint:eslint --fix",
+    "lint:eslint": "eslint './{src, test}/**/*.{ts,tsx}'",
+    "lint:prettier": "yarn prettier './{src, test}/**/*.{ts,tsx}'"
+  },
+  "dependencies": {
+    "@nucypher/nucypher-ts": "^0.9.0",
+    "@types/styled-components": "^5.1.7",
+    "@usedapp/core": "^1.2.2",
+    "file-loader": "^6.2.0",
+    "framer-motion": "^4.1.5",
+    "react": "^17.0.0",
+    "react-dom": "^17.0.0",
+    "react-router-dom": "^5.2.0",
+    "styled-components": "^5.2.1"
+  },
+  "devDependencies": {
+    "@pmmmwh/react-refresh-webpack-plugin": "^0.4.3",
+    "@testing-library/react": "^11.0.0",
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
+    "@types/react-router-dom": "^5.1.7",
+    "@typescript-eslint/eslint-plugin": "^4.28.2",
+    "@typescript-eslint/parser": "^4.28.2",
+    "buffer": "^6.0.3",
+    "copy-webpack-plugin": "^6.2.1",
+    "esbuild-loader": "^2.11.0",
+    "eslint": "^7.30.0",
+    "html-webpack-plugin": "^4.5.0",
+    "prettier": "^2.0.5",
+    "process": "^0.11.10",
+    "react-refresh": "^0.10.0",
+    "rimraf": "^4.1.2",
+    "speed-measure-webpack-plugin": "^1.5.0",
+    "stream-browserify": "^3.0.0",
+    "ts-loader": "^8.0.7",
+    "typescript": "^4.0.0",
+    "webpack": "^5.44.0",
+    "webpack-bundle-analyzer": "^4.4.2",
+    "webpack-cli": "^4.7.2",
+    "webpack-dev-server": "^3.11.2"
+  },
+  "resolutions": {
+    "ethers": "5.5.1"
+  }
+}
