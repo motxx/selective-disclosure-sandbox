@@ -22,6 +22,7 @@ async function generateInclusion(tree, _key) {
         oldValue: 0,
         isOld0: 0,
         key: tree.F.toObject(key),
+        keyNonce: tree.F.toObject(123),
         value: tree.F.toObject(res.foundValue)
     };
 
@@ -49,6 +50,7 @@ async function generateExclusion(tree, _key) {
         oldValue: res.isOld0 ? 0 : tree.F.toObject(res.notFoundValue),
         isOld0: res.isOld0 ? 1 : 0,
         key: tree.F.toObject(key),
+        keyNonce: tree.F.toObject(123),
         value: 0
     }
 

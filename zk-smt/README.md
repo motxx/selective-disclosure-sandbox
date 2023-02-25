@@ -69,7 +69,7 @@ snarkjs zkey export verificationkey circuit_final.zkey verification_key.json
 
 #### 6. Create proof
 
-**TODO: create `public.json` generator.**
+* M1 MacBookPro で 10 ~ 20 秒かかる
 
 ```
 snarkjs plonk prove circuit_final.zkey witness.wtns proof.json public.json
