@@ -1,12 +1,21 @@
 # ZK-SMT (ZK Sparse Merkle Tree)
 
-![ZK-SMT](https://user-images.githubusercontent.com/5776910/220498388-05c85e7e-5b9b-4a6b-850a-f8830e3b27f9.jpg)
+![ZK-SMT](./ZK-SMT.drawio.svg)
 
 ## Circuit
 
 ```circom
 component main = SMTVerifier(N);
 ```
+
+## TODO
+
+* 疑問解決
+  * このアルゴリズムで本当に大丈夫か?サンプルはないのか?
+  * MerkleTreeが使えない理由は?
+  * private/publicの切り分けは正しいか?
+  * HolderのDBには何を持てばよいか? VC => Nonce の mapping ?
+* トークンベースで実装
 
 ## Getting started
 
@@ -69,7 +78,7 @@ snarkjs zkey export verificationkey circuit_final.zkey verification_key.json
 
 #### 6. Create proof
 
-* M1 MacBookPro で 10 ~ 20 秒かかる
+* 葉が2^10の場合で、M1 MacBookPro で 10 ~ 20 秒かかる
 
 ```
 snarkjs plonk prove circuit_final.zkey witness.wtns proof.json public.json
