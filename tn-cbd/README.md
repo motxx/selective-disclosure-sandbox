@@ -1,6 +1,11 @@
 # SBT selective disclosure with Threshold Network
 
-![Untitled (3)](https://user-images.githubusercontent.com/5776910/222158420-84c18e3f-47f7-43ca-8cae-820e8be4e9de.jpg)
+## 何
+
+* SBTにメッセージの解錠キーを紐付けて、VCとして発行する
+* SBT(VC) holderは有効期限付きで特定のwalletにデータが見えるような権限を付与できる
+
+![Untitled (4)](https://user-images.githubusercontent.com/5776910/223904587-2b907d06-346f-41b1-880a-0ff690540c89.jpg)
 
 ## デモ
 
@@ -17,9 +22,5 @@ yarn start
 
 ## 課題
 
-* VCの公開がThreshold Networkのセキュリティに強く依存する
-* Issuer -> HolderにSBTを発行した事実が公開される
-  * 解決策
-    * SBTコントラクトを共通にする
-    * stealth-addressを使う
-    * L2を使う(Threshold Networkも不要)
+* Threshold NetworkがまだPoC段階
+  * 仕様もセキュリティ周りもまだ荒い
