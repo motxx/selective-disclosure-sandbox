@@ -5,7 +5,7 @@
 * SBTにメッセージの解錠キーを紐付けて、VCとして発行する
 * SBT(VC) holderは有効期限付きで特定のwalletにデータが見えるような権限を付与できる
 
-![Untitled (4)](https://user-images.githubusercontent.com/5776910/223904587-2b907d06-346f-41b1-880a-0ff690540c89.jpg)
+![Untitled (5)](https://user-images.githubusercontent.com/5776910/223907249-7e26350f-170e-4267-abb2-e2e9fb671eca.jpg)
 
 ## デモ
 
