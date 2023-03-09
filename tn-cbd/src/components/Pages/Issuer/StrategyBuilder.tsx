@@ -22,17 +22,17 @@ function StrategyBuilder({ setDepStrategy, setDepStrategyStatus }: any) {
     const strategy = Strategy.create(cohort);
 
     const deployedStrategy = await strategy.deploy(
-      `blog-subscription-${Math.floor(Math.random() * 100)}`,
+      `vc-strategy-${Math.floor(Math.random() * 1000)}`,
       web3Provider
     );
 
     setDepStrategy(deployedStrategy);
-    setDepStrategyStatus(deployedStrategy.label);
+    setDepStrategyStatus("deployed: " + deployedStrategy.label);
   };
 
   return (
     <button className="cbd-button" onClick={strategyBuild}>
-      Step 2. Deploy Strategy
+      Deploy Strategy
     </button>
   );
 }

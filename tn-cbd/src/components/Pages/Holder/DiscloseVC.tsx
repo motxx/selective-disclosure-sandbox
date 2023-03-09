@@ -1,87 +1,76 @@
-import React, { useState, VFC } from "react";
-import Datetime from "react-datetime";
-import { Mumbai } from "@usedapp/core";
-import { Conditions, ConditionSet } from "@nucypher/nucypher-ts";
+import React, { useState } from "react";
+import type { DeployedStrategy } from "@nucypher/nucypher-ts";
+// import { VCEncrypter } from "../../../common/VCEncrypter";
+import { SBTContract } from "../../../common/SBTContract";
 
-import "react-datetime/css/react-datetime.css";
+function DiscloseVC({ depStrategy, disclosureMessage }: { depStrategy: DeployedStrategy | null, disclosureMessage: string | null }) {
+  const [sbtAddress, setSBTAddress] = useState("0x36DC0ae7272556B998a30A8996C62bb966B178c5");
+  const [toAddress, setToAddress] = useState("0x");
+  const [tokenId, setTokenId] = useState(-1);
+  const [expirationBlockHeight, setExpirationBlockHeight] = useState(0);
 
-const DiscloseVC: VFC = ({ depStrategy, setConditionSets, setEncryptedMessages }: any) => {
-  const [expirationDatetime, setExpirationDatetime] = useState(new Date());
-
-  const buildERC721BalanceCondConfig = (balance: number) => {
-    const config = {
-      contractAddress: "0xf5de760f2e916647fd766B4AD9E85ff943cE3A2b",
-      standardContractType: "ERC721",
-      chain: Mumbai.chainId,
-      method: "balanceOf",
-      parameters: [":userAddress"],
-      returnValueTest: {
-        comparator: ">=",
-        value: balance,
-      },
-    };
-    return config;
-  };
-
-  const discloseVC = () => {
-    if (!depStrategy.encrypter) return;
-
-    setConditionSets([]);
-    setEncryptedMessages([]);
-
-    const encrypter = depStrategy.encrypter;
-
-    const conditionSetBronze = new ConditionSet([
-      new Conditions.Condition(buildERC721BalanceCondConfig(1)),
-    ]);
-    const conditionSetSilver = new ConditionSet([
-      new Conditions.Condition(buildERC721BalanceCondConfig(2)),
-    ]);
-    const conditionSetGold = new ConditionSet([
-      new Conditions.Condition(buildERC721BalanceCondConfig(3)),
-    ]);
-
-    const encryptedBronze = encrypter.encryptMessage(
-      "{}",
-      conditionSetBronze
-    );
-    const encryptedSilver = encrypter.encryptMessage(
-      "{}",
-      conditionSetSilver
-    );
-    const encryptedGold = encrypter.encryptMessage(
-      "{}",
-      conditionSetGold
-    );
-
-    setConditionSets([
-      conditionSetBronze,
-      conditionSetSilver,
-      conditionSetGold,
-    ]);
-    setEncryptedMessages([encryptedBronze, encryptedSilver, encryptedGold]);
+  const discloseVC = async (contractAddress: string, to: string, tokenId: number, blockHeight: number) => {
+    /*
+    if (!depStrategy) {
+      console.log("depStrategy not defined");
+      return;
+    }
+    if (!disclosureMessage || !disclosureMessage.length) {
+      console.log("disclosureMessage not set");
+      return;
+    }
+    const tokenId = await new VCEncrypter(depStrategy, contractAddress)
+      .issueDisclosureVC(to, disclosureMessage, blockHeight);
+    if (!tokenId) {
+      console.log("failed to vcencrypt disclosure");
+      return;
+    }
+    setTokenId(tokenId);
+    */
+    const sbtContract = await SBTContract.connectTo(contractAddress);
+    if (!sbtContract) {
+      console.log("failed to load contract");
+      return;
+    }
+    await sbtContract.issueDisclosure(to, tokenId, blockHeight);
   };
 
   return (
     <div>
-      <h2>Disclose VC</h2>
-    <div>
-      <div><label htmlFor="to">To</label></div>
-      <input id="to" />
+      <div>
+        <div><label htmlFor="to">To</label></div>
+        <input id="to" value={toAddress} onChange={e => setToAddress(e.target.value)} />
+      </div>
+      <div>
+        <div><label htmlFor="sbt-address">SBT address</label></div>
+        <input
+          id="sbt-address"
+          value={sbtAddress}
+          onChange={e => setSBTAddress(e.target.value)}
+        />
+      </div>
+      <div>
+        <label>Token Id</label><br />
+        <input id="token-id" value={tokenId} onChange={e => setTokenId(+e.target.value)} />
+      </div>
+      <div>
+        <div><label htmlFor="expiration-block-height">Expiration BlockHeight</label></div>
+        <input id="expiration-block-height"
+          value={expirationBlockHeight}
+          onChange={e => setExpirationBlockHeight(+e.target.value)}
+        />
+      </div>
+      <button className="cbd-button" onClick={() => discloseVC(sbtAddress, toAddress, tokenId, expirationBlockHeight)}>
+        Disclose VC
+      </button>
     </div>
-    <div>
-      <div><label htmlFor="sbt-address">SBT address</label></div>
-      <input id="sbt-address" />
-    </div>
-    <div>
-      <div><label>Expiration Datetime</label></div>
-      <Datetime value={expirationDatetime} onChange={(datetime) => setExpirationDatetime(datetime)} />
-    </div>
-    <button className="cbd-button" onClick={discloseVC}>
-      Disclose VC
-    </button>
-  </div>
   );
+  /*
+      <div>
+        <div><label htmlFor="token-id">Disclosure tokenId</label></div>
+        <p>{tokenId}</p>
+      </div>
+  */
 };
 
 export default DiscloseVC;

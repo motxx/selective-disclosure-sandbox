@@ -1,46 +1,50 @@
-import React from "react";
-import { Mumbai } from "@usedapp/core";
-import { Conditions, ConditionSet } from "@nucypher/nucypher-ts";
+import React, { useState } from "react";
+import { VCDecrypter } from "../../../common/VCDecrypter";
 
-function Viewer({ depStrategy, setConditionSets, setEncryptedMessages }: any) {
-  const buildERC721BalanceCondConfig = (balance: number) => {
-    const config = {
-      contractAddress: "0xf5de760f2e916647fd766B4AD9E85ff943cE3A2b",
-      standardContractType: "ERC721",
-      chain: Mumbai.chainId,
-      method: "balanceOf",
-      parameters: [":userAddress"],
-      returnValueTest: {
-        comparator: ">=",
-        value: balance,
-      },
-    };
-    return config;
+function Viewer() {
+  const [sbtAddress, setSBTAddress] = useState("0x36DC0ae7272556B998a30A8996C62bb966B178c5");
+  const [tokenId, setTokenId] = useState(0);
+  const [decryptedMessage, setDecryptedMessage] = useState("");
+
+  const viewContent = async (contractAddress: string, tokenId: number) => {
+    setDecryptedMessage("");
+    const decryptedMessages = await new VCDecrypter(contractAddress).decryptVC(tokenId);
+    if (!decryptedMessages) {
+      console.log("failed to vcdecrypt");
+      return;
+    }
+    setDecryptedMessage(decryptedMessages);
   };
 
   return (
     <div>
-    <h2>Viewer</h2>
-    <div>
-      <p>
-        <label htmlFor="holder">Holder address</label>
-        <div>0x</div>
-      </p>
+      <div>
+        <div><label htmlFor="sbt-address">SBT address</label></div>
+        <input
+          id="sbt-address"
+          value={sbtAddress}
+          onChange={e => setSBTAddress(e.target.value)}
+        />
+      </div>
+      <div>
+        <div><label htmlFor="token-id">Disclosure tokenId</label></div>
+        <input
+          id="token-id"
+          value={tokenId}
+          onChange={e => setTokenId(+e.target.value)}
+        />
+      </div>
+      <div>
+        <p>
+          <label htmlFor="content">Decrypted content</label><br />
+          <span id="content">{decryptedMessage}</span>
+        </p>
+      </div>
+      <button className="cbd-button" onClick={() => viewContent(sbtAddress, tokenId)}>
+        View disclosed VC
+      </button>
     </div>
-    <div>
-      <p>
-        <label htmlFor="vc-uid">VC UID</label>
-        <div>uid xxx</div>
-      </p>
-    </div>
-    <div>
-      <p>
-        <label htmlFor="body">Decrypted content</label>
-        <div id="content">content</div>
-      </p>
-    </div>
-  </div>
   );
-}
+};
 
 export default Viewer;

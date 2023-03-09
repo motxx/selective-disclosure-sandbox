@@ -1,5 +1,5 @@
 import React, { VFC } from "react";
-import WalletHeader from "../Common/WalletHeader";
+import WalletHeader from "../../common/WalletHeader";
 import Viewer from "./Verifier/Viewer";
 
 const Verifier: VFC = () => {
