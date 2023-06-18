@@ -1,10 +1,22 @@
 import express, { Request, Response } from "express";
 import bodyParser from "body-parser";
+import * as LitJsSdk from "@lit-protocol/lit-node-client-nodejs";
 
 const app = express();
 
 // Middleware to parse JSON bodies
 app.use(bodyParser.json());
+
+// Middleware to use LitProtocol
+app.use(async (req, res, next) => {
+  if (!app.locals.litNodeClient) {
+    app.locals.litNodeClient = new LitJsSdk.LitNodeClientNodeJs({
+      alertWhenUnauthorized: false,
+    });
+    await app.locals.litNodeClient.connect();
+  }
+  next();
+});
 
 app.post("/encrypt", async (req: Request, res: Response) => {
   const jsonldText = req.body;
@@ -40,5 +52,5 @@ app.post("/prove", async (req: Request, res: Response) => {
 const port = 3000;
 
 app.listen(port, () => {
-  console.log(`Server is running at http://localhost:${port}`);
+  console.log(`Server is listening on port ${port}`);
 });
