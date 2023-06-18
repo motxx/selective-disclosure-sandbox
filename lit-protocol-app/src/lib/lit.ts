@@ -1,7 +1,7 @@
 import * as LitJsSdk from '@lit-protocol/lit-node-client';
 import { EncryptedText } from './types';
 
-const chain = 'matic';
+const chain = 'mumbai';
 
 // Checks if the user has at least 0.1 MATIC
 const accessControlConditions = [
@@ -78,4 +78,7 @@ class Lit {
   }
 }
 
-export const lit = new Lit({ alertWhenUnauthorized: false });
+const lit = new Lit({ alertWhenUnauthorized: false });
+lit.connect();
+
+export { lit };

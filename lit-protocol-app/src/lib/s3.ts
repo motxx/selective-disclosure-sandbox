@@ -21,7 +21,7 @@ export const uploadToS3 = async (
   const uploadParams: S3.PutObjectRequest = {
     Bucket: bucket,
     Key: s3DataKey,
-    Body: encryptedData,
+    Body: JSON.stringify(encryptedData),
     ContentType: 'application/json',
     ACL: 'public-read',
   };
@@ -51,6 +51,6 @@ export const downloadFromS3 = async (
   if (!result) {
     throw new Error('Data not found');
   }
-  const content = result.Body as EncryptedText;
+  const content: EncryptedText = JSON.parse(result.Body as string);
   return content;
 };
