@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { downloadFromS3 } from '../lib/s3';
+import { lit } from '../lib/lit';
 
 interface CredentialDownloaderProps {
   s3DataKey: string;
@@ -8,14 +9,14 @@ interface CredentialDownloaderProps {
 const CredentialDownloader: React.FC<CredentialDownloaderProps> = ({
   s3DataKey,
 }) => {
-  const [downloadUrl, setDownloadUrl] = useState<string | null>(null);
+  const [decryptedText, setDecryptedText] = useState<string | null>(null);
 
   const handleDownload = async () => {
     try {
-      const blob = await downloadFromS3(s3DataKey);
-      if (blob) {
-        const url = URL.createObjectURL(blob);
-        setDownloadUrl(url);
+      const encryptedText = await downloadFromS3(s3DataKey);
+      if (encryptedText) {
+        const decrypted = await lit.decryptText(encryptedText);
+        setDecryptedText(decrypted);
       }
     } catch (error) {
       console.error('Failed to download credential:', error);
@@ -25,10 +26,8 @@ const CredentialDownloader: React.FC<CredentialDownloaderProps> = ({
   return (
     <div>
       <h2>Credential Downloader</h2>
-      {downloadUrl ? (
-        <a href={downloadUrl} download="credential.json">
-          Download Credential
-        </a>
+      {decryptedText ? (
+        <textarea value={decryptedText} readOnly />
       ) : (
         <button onClick={handleDownload}>Download</button>
       )}

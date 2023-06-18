@@ -18,17 +18,12 @@ export const uploadToS3 = async (
   s3DataKey: string,
   encryptedData: EncryptedText,
 ): Promise<void> => {
-  const { encryptedString, symmetricKey } = encryptedData;
-
   const uploadParams: S3.PutObjectRequest = {
     Bucket: bucket,
     Key: s3DataKey,
-    Body: encryptedString,
+    Body: encryptedData,
     ContentType: 'application/json',
     ACL: 'public-read',
-    Metadata: {
-      symmetricKey,
-    },
   };
 
   await s3
@@ -39,7 +34,9 @@ export const uploadToS3 = async (
     });
 };
 
-export const downloadFromS3 = async (s3DataKey: string): Promise<Blob> => {
+export const downloadFromS3 = async (
+  s3DataKey: string,
+): Promise<EncryptedText> => {
   const downloadParams: S3.GetObjectRequest = {
     Bucket: bucket,
     Key: s3DataKey,
@@ -54,6 +51,6 @@ export const downloadFromS3 = async (s3DataKey: string): Promise<Blob> => {
   if (!result) {
     throw new Error('Data not found');
   }
-  const content = result.Body as Blob;
+  const content = result.Body as EncryptedText;
   return content;
 };
