@@ -1,5 +1,6 @@
 import AWS, { AWSError, S3 } from 'aws-sdk';
-import { EncryptedText } from './types';
+import { EncryptedText } from './constants';
+import { deserialize, serialize } from './utils';
 
 const s3 = new AWS.S3({
   accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID!,
@@ -21,7 +22,7 @@ export const uploadToS3 = async (
   const uploadParams: S3.PutObjectRequest = {
     Bucket: bucket,
     Key: s3DataKey,
-    Body: JSON.stringify(encryptedData),
+    Body: await serialize(encryptedData),
     ContentType: 'application/json',
     ACL: 'public-read',
   };
@@ -51,6 +52,6 @@ export const downloadFromS3 = async (
   if (!result) {
     throw new Error('Data not found');
   }
-  const content: EncryptedText = JSON.parse(result.Body as string);
+  const content: EncryptedText = await deserialize(result.Body as string);
   return content;
 };

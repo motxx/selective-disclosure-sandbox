@@ -1,22 +1,9 @@
 import * as LitJsSdk from '@lit-protocol/lit-node-client';
-import { EncryptedText } from './types';
-
-const chain = 'mumbai';
-
-// Checks if the user has at least 0.1 MATIC
-const accessControlConditions = [
-  {
-    contractAddress: '',
-    standardContractType: '',
-    chain,
-    method: 'eth_getBalance',
-    parameters: [':userAddress', 'latest'],
-    returnValueTest: {
-      comparator: '>=',
-      value: '100000000000000000', // 0.1 MATIC
-    },
-  },
-];
+import {
+  EncryptedText,
+  createAccessControlConditions,
+  chain,
+} from './constants';
 
 class Lit {
   public litNodeClient;
@@ -33,24 +20,30 @@ class Lit {
     }
   }
 
-  async encryptText(text: string): Promise<EncryptedText> {
+  async encryptText(
+    text: string,
+    contractAddress: string,
+  ): Promise<EncryptedText> {
     if (!this.litNodeClient) {
       await this.connect();
     }
-    const authSig = await LitJsSdk.checkAndSignAuthMessage({ chain });
+
+    const unifiedAccessControlConditions =
+      createAccessControlConditions(contractAddress);
     const { encryptedString, symmetricKey } = await LitJsSdk.encryptString(
       text,
     );
+    const authSig = await LitJsSdk.checkAndSignAuthMessage({ chain });
 
     const encryptedSymmetricKey = await this.litNodeClient.saveEncryptionKey({
-      accessControlConditions: accessControlConditions,
+      unifiedAccessControlConditions,
       symmetricKey,
       authSig,
       chain,
     });
 
     return {
-      encryptedString: encryptedString,
+      encryptedString,
       symmetricKey: LitJsSdk.uint8arrayToString(
         encryptedSymmetricKey,
         'base16',
@@ -58,18 +51,21 @@ class Lit {
     };
   }
 
-  async decryptText(encryptedText: EncryptedText) {
+  async decryptText(encryptedText: EncryptedText, contractAddress: string) {
     if (!this.litNodeClient) {
       await this.connect();
     }
 
+    const unifiedAccessControlConditions =
+      createAccessControlConditions(contractAddress);
     const authSig = await LitJsSdk.checkAndSignAuthMessage({ chain });
     const symmetricKey = await this.litNodeClient.getEncryptionKey({
-      accessControlConditions: accessControlConditions,
+      unifiedAccessControlConditions,
       toDecrypt: encryptedText.symmetricKey,
       chain,
       authSig,
     });
+    console.log('encryptedText', encryptedText);
 
     return await LitJsSdk.decryptString(
       encryptedText.encryptedString,
