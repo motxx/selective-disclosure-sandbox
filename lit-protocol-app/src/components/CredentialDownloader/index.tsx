@@ -1,18 +1,19 @@
 import React, { ChangeEvent, useState } from 'react';
-import { downloadFromS3 } from '../lib/s3';
-import { lit } from '../lib/lit';
-import { defaultContract } from '../lib/constants';
+import { downloadFromS3 } from '@/lib/s3';
+import { lit } from '@/lib/lit';
+import { defaultContract } from '@/lib/constants';
 
 interface CredentialDownloaderProps {
-  s3DataKey: string;
+  holderAddress: string;
 }
 
 const CredentialDownloader: React.FC<CredentialDownloaderProps> = ({
-  s3DataKey,
+  holderAddress,
 }) => {
   const [decryptedText, setDecryptedText] = useState<string | null>(null);
   const [contractAddress, setContractAddress] =
     useState<string>(defaultContract);
+  const [credentialName, setCredentialName] = useState<string>('');
 
   const handleContractAddressChange = (
     event: ChangeEvent<HTMLInputElement>,
@@ -21,9 +22,14 @@ const CredentialDownloader: React.FC<CredentialDownloaderProps> = ({
     setContractAddress(value);
   };
 
+  const handleCredentialNameChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target;
+    setCredentialName(value);
+  };
+
   const handleDownload = async () => {
     try {
-      const encryptedText = await downloadFromS3(s3DataKey);
+      const encryptedText = await downloadFromS3(holderAddress, credentialName);
       if (encryptedText) {
         const decrypted = await lit.decryptText(encryptedText, contractAddress);
         setDecryptedText(decrypted);
@@ -46,7 +52,20 @@ const CredentialDownloader: React.FC<CredentialDownloaderProps> = ({
           placeholder="Enter Contract Address"
         />
       </div>
-      <button onClick={handleDownload} disabled={!contractAddress}>
+      <div style={{ marginBottom: '10px' }}>
+        <label htmlFor="credentialName">Credential Name:</label>
+        <input
+          id="credentialName"
+          type="text"
+          value={credentialName}
+          onChange={handleCredentialNameChange}
+          placeholder="Enter Credential Name"
+        />
+      </div>
+      <button
+        onClick={handleDownload}
+        disabled={!contractAddress || !credentialName}
+      >
         Download
       </button>
       {decryptedText && (

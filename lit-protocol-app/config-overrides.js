@@ -1,3 +1,4 @@
+const path = require('path');
 const rewired = require('react-app-rewired');
 
 module.exports = {
@@ -20,6 +21,10 @@ module.exports = {
     config.resolve.fallback = {
       crypto: require.resolve('crypto-browserify'),
       stream: require.resolve('stream-browserify'),
+    };
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@': path.resolve(__dirname, 'src'),
     };
     return config;
   },

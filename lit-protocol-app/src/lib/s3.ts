@@ -15,13 +15,18 @@ const handleAWSError = (error: AWSError, action: string) => {
   throw error;
 };
 
+const getCredentialPath = (holderAddress: string, credentialName: string) => {
+  return `credentials/${holderAddress}/${credentialName}.json`;
+};
+
 export const uploadToS3 = async (
-  s3DataKey: string,
+  holderAddress: string,
+  credentianName: string,
   encryptedData: EncryptedText,
 ): Promise<void> => {
   const uploadParams: S3.PutObjectRequest = {
     Bucket: bucket,
-    Key: s3DataKey,
+    Key: getCredentialPath(holderAddress, credentianName),
     Body: await serialize(encryptedData),
     ContentType: 'application/json',
     ACL: 'public-read',
@@ -36,11 +41,12 @@ export const uploadToS3 = async (
 };
 
 export const downloadFromS3 = async (
-  s3DataKey: string,
+  holderAddress: string,
+  credentianName: string,
 ): Promise<EncryptedText> => {
   const downloadParams: S3.GetObjectRequest = {
     Bucket: bucket,
-    Key: s3DataKey,
+    Key: getCredentialPath(holderAddress, credentianName),
   };
 
   const result = await s3
