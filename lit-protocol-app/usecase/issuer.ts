@@ -1,5 +1,5 @@
 import { KeyPairOptions } from '@mattrglobal/jsonld-signatures-bbs';
-import { CredentialsBbsBls } from '~/lib/credentials-bbs-bls';
+import * as zkcreds from '~/lib/credentials-bbs-bls';
 
 export const issueCredential = async (
   holderAddress: string,
@@ -7,9 +7,8 @@ export const issueCredential = async (
   inputDocument: object,
 ) => {
   console.log(inputDocument);
-  const bbsBls = await CredentialsBbsBls.connect();
-  const keyPairOptions = await bbsBls.generateMockKeyPairOptions();
-  const signedDocument = await bbsBls.signDocument(
+  const keyPairOptions = await zkcreds.generateMockKeyPairOptions();
+  const signedDocument = await zkcreds.signDocument(
     inputDocument,
     keyPairOptions,
   );

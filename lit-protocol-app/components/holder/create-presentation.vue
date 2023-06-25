@@ -30,7 +30,7 @@ const createPresentation = async () => {
   <h2
     class="text-2xl md:text-3xl font-extrabold text-gray-800 mb-4 md:mb-8 tracking-tight"
   >
-    Step2. Create Verifiable Presentation
+    Create Verifiable Presentation
   </h2>
 
   <!-- VC ACL -->

@@ -1,4 +1,4 @@
-import { CredentialsBbsBls } from '~/lib/credentials-bbs-bls';
+import * as zkcreds from '~/lib/credentials-bbs-bls';
 
 type PresentationArgs = {
   credentialName: string;
@@ -24,8 +24,7 @@ export const createPresentation = async (
   if (!credential) {
     return null;
   }
-  const bbsBls = await CredentialsBbsBls.connect();
-  const presentation = await bbsBls.deriveProof(
+  const presentation = await zkcreds.deriveProof(
     credential,
     nameDisclosure,
     genderDisclosure,
