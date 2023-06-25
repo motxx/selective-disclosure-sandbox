@@ -1,14 +1,12 @@
 <script setup lang="ts">
 import { Credential } from '~/components/interfaces/credential.interface';
-import { Holder } from '~/usecase/holder';
+import * as holder from '~/usecase/holder';
 
 const credential = ref('');
 const name = ref('Taro');
 const gender = ref('Female');
 const country = ref('Japan');
 const credentialName = ref('PermanentResidentCard');
-
-const holder = new Holder();
 
 const emit = defineEmits(['credential-fetched']);
 

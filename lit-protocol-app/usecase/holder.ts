@@ -1,41 +1,35 @@
 import { CredentialsBbsBls } from '~/lib/credentials-bbs-bls';
 
-export class Holder {
-  credential: object | null = null;
-  presentation: object | null = null;
-  signature: string | null = null;
+export const fetchCredential = async (credentialName: string) => {
+  return await load(credentialName);
+};
 
-  fetchCredential = async (credentialName: string) => {
-    this.credential = await this.load(credentialName);
-    return this.credential;
-  };
-
-  createPresentation = async (
-    nameDisclosure: boolean,
-    genderDisclosure: boolean,
-    countryDisclosure: boolean,
-  ) => {
-    if (!this.credential) {
-      return null;
-    }
-    const bbsBls = await CredentialsBbsBls.connect();
-    const proof = await bbsBls.deriveProof(
-      this.credential,
-      nameDisclosure,
-      genderDisclosure,
-      countryDisclosure,
-    );
-    console.log(proof);
-    this.presentation = proof;
-    return this.presentation;
-  };
-
-  load = async (credentialName: string) => {
-    const key = `signedDocument-${credentialName}`;
-    const serializedValue = window.localStorage.getItem(key);
-    if (serializedValue) {
-      return JSON.parse(serializedValue);
-    }
+export const createPresentation = async (
+  credentialName: string,
+  nameDisclosure: boolean,
+  genderDisclosure: boolean,
+  countryDisclosure: boolean,
+) => {
+  const credential = await fetchCredential(credentialName);
+  if (!credential) {
     return null;
-  };
-}
+  }
+  const bbsBls = await CredentialsBbsBls.connect();
+  const presentation = await bbsBls.deriveProof(
+    credential,
+    nameDisclosure,
+    genderDisclosure,
+    countryDisclosure,
+  );
+  console.log(presentation);
+  return presentation;
+};
+
+const load = async (credentialName: string) => {
+  const key = `signedDocument-${credentialName}`;
+  const serializedValue = window.localStorage.getItem(key);
+  if (serializedValue) {
+    return JSON.parse(serializedValue);
+  }
+  return null;
+};

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import inputDocument from '~/lib/credentials-bbs/data/inputDocument.json';
-import { Issuer } from '~/usecase/issuer';
+import * as issuer from '~/usecase/issuer';
 
 const genders = ['Female', 'Male', 'Others'];
 const countries = [
@@ -81,14 +81,10 @@ const issueCredential = async () => {
   if (isAnyFieldEmpty()) {
     return;
   }
-  await new Issuer().issueCredential(
-    holderAddress.value,
-    credentialName.value,
-    {
-      ...inputDocument,
-      ...createCredentialSubject(),
-    },
-  );
+  await issuer.issueCredential(holderAddress.value, credentialName.value, {
+    ...inputDocument,
+    ...createCredentialSubject(),
+  });
 };
 </script>
 <template>

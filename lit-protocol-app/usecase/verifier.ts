@@ -1,9 +1,7 @@
-export class Verifier {
-  createPresentation = async () => {
-    return 'presentation created';
-  };
+export const createPresentation = async () => {
+  return 'presentation created';
+};
 
-  execute = async () => {
-    console.log('dApp executed');
-  };
-}
+export const execute = async () => {
+  console.log('dApp executed');
+};

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { Credential } from '~/components/interfaces/credential.interface';
-import { Holder } from '~/usecase/holder';
+import * as holder from '~/usecase/holder';
 
-defineProps<{
+const props = defineProps<{
   credential: Credential;
 }>();
 
@@ -13,10 +13,9 @@ const nameDisclosure = ref('Deny');
 const genderDisclosure = ref('Deny');
 const countryDisclosure = ref('Deny');
 
-const holder = new Holder();
-
 const createPresentation = async () => {
   const res = await holder.createPresentation(
+    props.credential.credentialName,
     nameDisclosure.value === 'Allow',
     genderDisclosure.value === 'Allow',
     countryDisclosure.value === 'Allow',

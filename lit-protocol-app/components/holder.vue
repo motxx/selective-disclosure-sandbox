@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { Credential } from '~/components/interfaces/credential.interface';
-import { Holder } from '~/usecase/holder';
 
 const credential = ref(null as Credential | null);
 
