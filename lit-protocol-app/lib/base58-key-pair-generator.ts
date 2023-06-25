@@ -2,23 +2,15 @@ import BIP32Factory from 'bip32';
 import * as ecc from 'tiny-secp256k1';
 import * as bip39 from 'bip39';
 import * as bs58 from 'bs58';
-import { CredentialKeyPair } from './types/credentials';
 import { Web3 } from './web3';
+import { KeyPairOptions } from '@mattrglobal/jsonld-signatures-bbs';
 
 const bip32 = BIP32Factory(ecc);
 
-export class CredentialsBBS {
+export class Base58KeyPairGenerator {
   constructor(private web3: Web3) {}
 
-  async generateMockIdentityObject(keyPair: CredentialKeyPair) {
-    return {
-      id: 'did:example:489398593#test',
-      controller: 'did:example:489398593',
-      ...keyPair,
-    };
-  }
-
-  async generateBase58KeyPair(): Promise<CredentialKeyPair> {
+  async generateBase58KeyPair(): Promise<KeyPairOptions> {
     const message =
       'BASE58 PRIVATE KEY SEED GENERATOR. DO NOT PUBLISH DERIVED SIGNATURE!';
     const seedPhrase = await this.web3.sign(message);

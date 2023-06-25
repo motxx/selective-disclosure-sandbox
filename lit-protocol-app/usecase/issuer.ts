@@ -1,4 +1,4 @@
-import { BbsBlsSignature } from 'lib/credentials-bbs/bbs-bls-signature';
+import { CredentialsBbsBls } from '~/lib/credentials-bbs-bls';
 
 export class Issuer {
   issueCredential = async (
@@ -7,7 +7,7 @@ export class Issuer {
     inputDocument: object,
   ) => {
     console.log(inputDocument);
-    const bbsBls = await BbsBlsSignature.connect();
+    const bbsBls = await CredentialsBbsBls.connect();
     const signedDocument = await bbsBls.signDocument(inputDocument);
     await this.save(credentialName, signedDocument);
   };

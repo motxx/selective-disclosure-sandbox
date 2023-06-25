@@ -1,4 +1,4 @@
-import { BbsBlsSignature } from 'lib/credentials-bbs/bbs-bls-signature';
+import { CredentialsBbsBls } from '~/lib/credentials-bbs-bls';
 
 export class Holder {
   credential: object | null = null;
@@ -18,7 +18,7 @@ export class Holder {
     if (!this.credential) {
       return null;
     }
-    const bbsBls = await BbsBlsSignature.connect();
+    const bbsBls = await CredentialsBbsBls.connect();
     const proof = await bbsBls.deriveProof(
       this.credential,
       nameDisclosure,

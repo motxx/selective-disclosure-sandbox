@@ -1,4 +1,5 @@
 import * as data from './data';
+import { KeyPairOptions } from '@mattrglobal/jsonld-signatures-bbs';
 
 const documents: { [key: string]: object | string } = {
   'did:example:489398593#test': data.keyPairOptions,
@@ -42,17 +43,14 @@ export class BbsBlsSignature {
     );
   }
 
-  private async getKeyPair() {
-    return new this.BbsBls.Bls12381G2KeyPair(data.keyPairOptions);
-  }
-
-  async signDocument(inputDocument: object) {
-    const keyPair = await this.getKeyPair();
+  async signDocument(inputDocument: object, keyPairOptions: KeyPairOptions) {
     console.log('Input document');
     console.log(JSON.stringify(inputDocument, null, 2));
 
     return this.JsonLd.sign(inputDocument, {
-      suite: new this.BbsBls.BbsBlsSignature2020({ key: keyPair }),
+      suite: new this.BbsBls.BbsBlsSignature2020({
+        key: this.getBlsKeyPair(keyPairOptions),
+      }),
       purpose: new this.JsonLd.purposes.AssertionProofPurpose(),
       documentLoader: this.documentLoader,
     });
@@ -75,6 +73,10 @@ export class BbsBlsSignature {
       suite: new this.BbsBls.BbsBlsSignatureProof2020(),
       documentLoader: this.documentLoader,
     });
+  }
+
+  private getBlsKeyPair(keyPairOptions: KeyPairOptions) {
+    return new this.BbsBls.Bls12381G2KeyPair(keyPairOptions);
   }
 
   private constructRevealDocument(
