@@ -1,15 +1,9 @@
 {
-  // https://nuxt.com/docs/guide/concepts/typescript
   "extends": "./.nuxt/tsconfig.json",
   "compilerOptions": {
     "target": "esnext",
     "module": "commonjs",
     "sourceMap": true,
-    "strict": true,
-    "baseUrl": "./",
-    "paths": {
-      "@/*": ["./"],
-      "~/*": ["./"]
-    }
+    "strict": true
   }
 }
