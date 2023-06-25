@@ -38,4 +38,9 @@ export class Web3 {
   async sign(message: string) {
     return await this.signer.signMessage(message);
   }
+
+  async signAndKeccak256(message: string) {
+    const signature = await this.sign(message);
+    return ethers.getBytes(ethers.keccak256(signature));
+  }
 }

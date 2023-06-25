@@ -23,13 +23,13 @@ const countries = [
 
 const createRef = (initialValue = '') => ref(initialValue);
 
-const holderAddress = createRef();
-const credentialName = createRef();
-const givenName = createRef();
-const familyName = createRef();
-const gender = createRef();
-const birthDate = createRef();
-const country = createRef();
+const holderAddress = createRef('0xD32241f26f604E4dD2523b12aD21fD029EAF0F2D');
+const credentialName = createRef('PermanentResidentCard');
+const givenName = createRef('Sana');
+const familyName = createRef('Natori');
+const gender = createRef('Female');
+const birthDate = createRef('2006-03-07');
+const country = createRef('Japan');
 
 const createDID = (walletAddress: string) => {
   return `did:ethr:${walletAddress}`;

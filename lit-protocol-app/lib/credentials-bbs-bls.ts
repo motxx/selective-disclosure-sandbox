@@ -21,14 +21,18 @@ export class CredentialsBbsBls {
     return {
       id: 'did:example:489398593#test',
       controller: 'did:example:489398593',
-      ...keyPair,
+      privateKeyBase58: keyPair.privateKey,
+      publicKeyBase58: keyPair.publicKey,
     };
   }
 
   async signDocument(inputDocument: object) {
     // const keyPairOptions = await this.generateMockKeyPairOptions();
-    const keyPairOptions = await this.keyPairGenerator.generateBase58KeyPair();
-    return this.bbsBls.signDocument(inputDocument, keyPairOptions);
+    const keyPair = await this.keyPairGenerator.generateBase58KeyPair();
+    return this.bbsBls.signDocument(inputDocument, {
+      privateKeyBase58: keyPair.privateKey,
+      publicKeyBase58: keyPair.publicKey,
+    });
   }
 
   async deriveProof(

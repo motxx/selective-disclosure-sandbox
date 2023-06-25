@@ -1,7 +1,6 @@
 import path from 'path';
 import { nodePolyfills } from 'vite-plugin-node-polyfills';
 import StringPlugin from 'vite-plugin-string';
-import wasmPlugin from 'vite-plugin-wasm';
 
 export default defineNuxtConfig({
   ssr: false,
@@ -14,7 +13,6 @@ export default defineNuxtConfig({
       nodePolyfills({
         protocolImports: true,
       }),
-      wasmPlugin(),
     ],
     resolve: {
       alias: {
