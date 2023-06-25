@@ -6,7 +6,7 @@ const credential = ref('');
 const name = ref('Taro');
 const gender = ref('Female');
 const country = ref('Japan');
-const credentialName = ref('');
+const credentialName = ref('PermanentResidentCard');
 
 const holder = new Holder();
 
