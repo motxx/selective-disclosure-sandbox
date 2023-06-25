@@ -2,35 +2,29 @@
 import { Credential } from '~/components/interfaces/credential.interface';
 import * as holder from '~/usecase/holder';
 
-const credential = ref('');
-const name = ref('Taro');
-const gender = ref('Female');
-const country = ref('Japan');
 const credentialName = ref('PermanentResidentCard');
+const fetchedData = ref(null as Credential | null);
 
 const emit = defineEmits(['credential-fetched']);
 
 const fetchCredential = async () => {
   const vc = await holder.fetchCredential(credentialName.value);
-  if (!vc) {
-    return;
+  if (vc) {
+    fetchedData.value = {
+      credentialName: credentialName.value,
+      jsonLd: JSON.stringify(vc, null, 4),
+      name:
+        (vc as any).credentialSubject.givenName +
+        ' ' +
+        (vc as any).credentialSubject.familyName,
+      gender: (vc as any).credentialSubject.gender,
+      country: (vc as any).credentialSubject.birthCountry,
+    };
+    emit('credential-fetched', fetchedData.value);
+  } else {
+    fetchedData.value = null;
+    emit('credential-fetched', null);
   }
-  credential.value = JSON.stringify(vc, null, 4);
-  name.value =
-    (vc as any).credentialSubject.givenName +
-    ' ' +
-    (vc as any).credentialSubject.familyName;
-  gender.value = (vc as any).credentialSubject.gender;
-  country.value = (vc as any).credentialSubject.birthCountry;
-
-  const result: Credential = {
-    credentialName: credentialName.value,
-    credentialJsonLd: credential.value,
-    name: name.value,
-    gender: gender.value,
-    country: country.value,
-  };
-  emit('credential-fetched', result);
 };
 </script>
 <template>
@@ -67,7 +61,7 @@ const fetchCredential = async () => {
         </button>
       </div>
     </div>
-    <div class="flex flex-wrap -mx-3 mb-6" v-if="credential">
+    <div class="flex flex-wrap -mx-3 mb-6" v-if="fetchedData">
       <div class="w-full px-3 mb-6 md:mb-0">
         <label
           class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
@@ -76,7 +70,7 @@ const fetchCredential = async () => {
           Fetched Data
         </label>
         <auto-height-textarea
-          v-model="credential"
+          v-model="fetchedData.jsonLd"
           id="grid-decrypted-data"
           class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
           readonly
