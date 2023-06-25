@@ -27,12 +27,15 @@ export class CredentialsBbsBls {
   }
 
   async signDocument(inputDocument: object) {
-    // const keyPairOptions = await this.generateMockKeyPairOptions();
+    const keyPair = await this.generateMockKeyPairOptions();
+    return this.bbsBls.signDocument(inputDocument, keyPair);
+    /*
     const keyPair = await this.keyPairGenerator.generateBase58KeyPair();
     return this.bbsBls.signDocument(inputDocument, {
       privateKeyBase58: keyPair.privateKey,
       publicKeyBase58: keyPair.publicKey,
     });
+    */
   }
 
   async deriveProof(
