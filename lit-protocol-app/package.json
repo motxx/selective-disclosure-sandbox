@@ -27,6 +27,7 @@
     "@mattrglobal/jsonld-signatures-bbs": "^1.1.2",
     "@mattrglobal/node-bbs-signatures": "0.15.0",
     "@nuxt/schema": "^3.3.2",
+    "aws-sdk": "^2.1404.0",
     "bitcoinjs-lib": "^6.1.3",
     "ethereum-checksum-address": "^0.0.8",
     "ethers": "v6",

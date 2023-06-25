@@ -3,12 +3,12 @@ import { EncryptedText } from './types/encryption';
 import { deserialize, serialize } from './utils';
 
 const s3 = new AWS.S3({
-  accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID!,
-  secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY!,
-  region: process.env.REACT_APP_AWS_REGION || 'ap-northeast-1',
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
+  region: process.env.AWS_REGION || 'ap-northeast-1',
 });
 
-const bucket = process.env.REACT_APP_S3_BUCKET || 'your-s3-bucket';
+const bucket = process.env.S3_BUCKET || 'your-s3-bucket';
 
 const handleAWSError = (error: AWSError, action: string) => {
   console.error(`Failed to ${action} file from S3:`, error);
