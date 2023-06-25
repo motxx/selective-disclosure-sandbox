@@ -48,4 +48,12 @@ export class CredentialsBbsBls {
       countryDisclosure,
     );
   }
+
+  async verifyProof(presentation: any) {
+    const res = await this.bbsBls.verifyProof(presentation).catch((e) => {
+      console.error(e);
+      return false;
+    });
+    return res;
+  }
 }

@@ -1,8 +1,13 @@
+import { CredentialsBbsBls } from '~/lib/credentials-bbs-bls';
 import { Web3 } from '~/lib/web3';
 
 export const verifyPresentation = async (presentation: any) => {
-  console.log('presentation', presentation);
-  return true;
+  const bbsBls = await CredentialsBbsBls.connect();
+  const res = await bbsBls.verifyProof(presentation).catch((e) => {
+    console.error(e);
+    return false;
+  });
+  return res;
 };
 
 export const downloadPresentation = async () => {

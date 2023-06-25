@@ -6,9 +6,14 @@ const emit = defineEmits(['presentation-downloaded']);
 
 const downloadPresentation = async () => {
   const serialized = await verifier.downloadPresentation();
-  const givenPresentation = JSON.parse(serialized);
-  presentation.value = JSON.stringify(givenPresentation, null, 4);
-  emit('presentation-downloaded', givenPresentation);
+  if (serialized) {
+    const givenPresentation = JSON.parse(serialized);
+    presentation.value = JSON.stringify(givenPresentation, null, 4);
+    emit('presentation-downloaded', givenPresentation);
+  } else {
+    presentation.value = '';
+    emit('presentation-downloaded', null);
+  }
 };
 </script>
 

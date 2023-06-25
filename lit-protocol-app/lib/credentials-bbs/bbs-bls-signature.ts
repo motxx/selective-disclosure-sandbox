@@ -1,5 +1,13 @@
 import * as data from './data';
 import { KeyPairOptions } from '@mattrglobal/jsonld-signatures-bbs';
+import { verify } from 'jsonld-signatures';
+
+/*
+import * as basex from 'base-x';
+
+const BASE58 = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
+const base58 = basex(BASE58);
+*/
 
 // 本来オンライン上のDIDドキュメントから引っ張ってくる
 const documents: { [key: string]: object | string } = {
@@ -46,6 +54,7 @@ export class BbsBlsSignature {
 
   private constructor(
     private BbsBls: typeof import('@mattrglobal/jsonld-signatures-bbs'),
+    private BbsSignature: typeof import('@mattrglobal/bbs-signatures'),
     private JsonLd: typeof import('jsonld-signatures'),
   ) {
     this.documentLoader = this.JsonLd.extendContextLoader(customDocLoader);
@@ -54,6 +63,7 @@ export class BbsBlsSignature {
   static async connect() {
     return new BbsBlsSignature(
       await import('@mattrglobal/jsonld-signatures-bbs'),
+      await import('@mattrglobal/bbs-signatures'),
       await import('jsonld-signatures'),
     );
   }
@@ -87,6 +97,31 @@ export class BbsBlsSignature {
     });
   }
 
+  async verifyProof(presentation: any) {
+    console.log('presentation', presentation);
+    // catchできないWasmのエラーが発生する
+    // Uncaught (in promise) RuntimeError: unreachable
+    // presentation.proof.proofValue = 'AB';
+
+    const result = await this.JsonLd.verify(presentation, {
+      suite: new this.BbsBls.BbsBlsSignatureProof2020(),
+      purpose: new this.JsonLd.purposes.AssertionProofPurpose(),
+      documentLoader: this.documentLoader,
+    }).catch((e: Error) => {
+      console.error(e);
+      return { verified: false, error: e };
+    });
+
+    console.log('verified result', result);
+
+    if (result.error) {
+      console.error(result.error);
+      return false;
+    } else {
+      return result.verified;
+    }
+  }
+
   private getBlsKeyPair(keyPairOptions: KeyPairOptions) {
     return new this.BbsBls.Bls12381G2KeyPair(keyPairOptions);
   }
@@ -106,5 +141,28 @@ export class BbsBlsSignature {
         ...(countryDisclosure ? { birthCountry: {} } : {}),
       },
     };
+  }
+
+  private static getValuesExcludingKeys(obj: { [key: string]: any }): any[] {
+    const excludedKeys = ['id', 'type'];
+    return Object.entries(obj)
+      .filter(([key]) => !excludedKeys.includes(key))
+      .map(([, value]) => value);
+  }
+
+  /*
+  private static base58ToUint8Array(base58Str: string): Uint8Array {
+    return new Uint8Array(base58.decode(base58Str));
+  }
+  */
+
+  private static base64ToUint8Array(base64: string): Uint8Array {
+    const binaryString = atob(base64);
+    const len = binaryString.length;
+    const bytes = new Uint8Array(len);
+    for (let i = 0; i < len; i++) {
+      bytes[i] = binaryString.charCodeAt(i);
+    }
+    return bytes;
   }
 }

@@ -5,15 +5,16 @@ const props = defineProps<{
   presentation: any;
 }>();
 
-const verified = ref(false);
 const verifiedData = ref(null as any);
 
 const verifyPresentation = async () => {
-  const res = await verifier.verifyPresentation(props.presentation);
-  if (res) {
-    verified.value = true;
-    verifiedData.value = res;
-  }
+  const res = await verifier
+    .verifyPresentation(props.presentation)
+    .catch((err) => {
+      console.error(err);
+      return false;
+    });
+  verifiedData.value = res;
 };
 </script>
 
@@ -32,7 +33,7 @@ const verifyPresentation = async () => {
     </div>
 
     <!-- Verified Presentation -->
-    <div class="flex flex-wrap -mx-3 mb-6" v-if="verified">
+    <div class="flex flex-wrap -mx-3 mb-6">
       <div class="w-full px-3 mb-6 md:mb-0">
         <label
           class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
