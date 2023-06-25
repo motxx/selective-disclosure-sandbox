@@ -1,46 +1,42 @@
-# Getting Started with Create React App
+# Nuxt 3 Minimal Starter
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
 
-## Available Scripts
+## Setup
 
-In the project directory, you can run:
+Make sure to install the dependencies:
 
-### `npm start`
+```bash
+# yarn
+yarn install
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+# npm
+npm install
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+# pnpm
+pnpm install
+```
 
-### `npm test`
+## Development Server
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Start the development server on http://localhost:3000
 
-### `npm run build`
+```bash
+npm run dev
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Production
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Build the application for production:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```bash
+npm run build
+```
 
-### `npm run eject`
+Locally preview production build:
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+```bash
+npm run preview
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.

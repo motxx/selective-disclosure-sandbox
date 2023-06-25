@@ -1,9 +1,0 @@
-{
-  "authSig": {
-    "sig": "0x7abf02e42f14e06cb826958bb2fd560fec2d81613d500422bba5926c97d247234ca8652969c01c6d37eef506bb4340a4ffb16d042f3f79aaefa418a8c6b63c211b",
-    "derivedVia": "web3.eth.personal.sign",
-    "signedMessage": "localhost:1210 wants you to sign in with your Ethereum account:\n0xE8C1084CE75ac6EF28886b8a782106F7467cE897\n\n\nURI: http://localhost:1210/auth\nVersion: 1\nChain ID: 1\nNonce: Z9iz8vb2MCTohw2oA\nIssued At: 2023-06-17T13:26:20.186Z\nExpiration Time: 2023-06-18T13:26:19.743Z",
-    "address": "0xe8c1084ce75ac6ef28886b8a782106f7467ce897"
-  },
-  "pkpPublicKey": "0x04ed45af578670f44413a28bf6d7851747012c64e246f50fc5bdc2feed6ad713b91e9c72a06763f097748a64c12db9575e62743d18d8ce49f31472f1344e11941e"
-}
