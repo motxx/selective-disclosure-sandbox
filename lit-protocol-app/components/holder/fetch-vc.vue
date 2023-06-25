@@ -31,7 +31,7 @@ const fetchCredential = async () => {
   <h2
     class="text-2xl md:text-3xl font-extrabold text-gray-800 mb-4 md:mb-8 tracking-tight"
   >
-    Step1. Fetch Verifiable Credential
+    Fetch Verifiable Credential
   </h2>
   <div class="w-full max-w-lg flex flex-col">
     <div class="flex flex-wrap -mx-3 mb-6">
