@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import inputDocument from '~/lib/zk-bbs/data/inputDocument.json';
-import { Issuer } from '~/usecase/issuer';
+import inputDocument from '~/lib/credentials-bbs/data/inputDocument.json';
+import * as issuer from '~/usecase/issuer';
 
 const genders = ['Female', 'Male', 'Others'];
 const countries = [
@@ -23,13 +23,13 @@ const countries = [
 
 const createRef = (initialValue = '') => ref(initialValue);
 
-const holderAddress = createRef();
-const credentialName = createRef();
-const givenName = createRef();
-const familyName = createRef();
-const gender = createRef();
-const birthDate = createRef();
-const country = createRef();
+const holderAddress = createRef('0xD32241f26f604E4dD2523b12aD21fD029EAF0F2D');
+const credentialName = createRef('PermanentResidentCard');
+const givenName = createRef('Sana');
+const familyName = createRef('Natori');
+const gender = createRef('Female');
+const birthDate = createRef('2006-03-07');
+const country = createRef('Japan');
 
 const createDID = (walletAddress: string) => {
   return `did:ethr:${walletAddress}`;
@@ -81,14 +81,10 @@ const issueCredential = async () => {
   if (isAnyFieldEmpty()) {
     return;
   }
-  await new Issuer().issueCredential(
-    holderAddress.value,
-    credentialName.value,
-    {
-      ...inputDocument,
-      ...createCredentialSubject(),
-    },
-  );
+  await issuer.issueCredential(holderAddress.value, credentialName.value, {
+    ...inputDocument,
+    ...createCredentialSubject(),
+  });
 };
 </script>
 <template>

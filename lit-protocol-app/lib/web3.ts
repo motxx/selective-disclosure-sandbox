@@ -18,7 +18,7 @@ export class Web3 {
    * Factory to create a client connected to the web3.
    * @returns A client instance connected to the web3.
    */
-  public static async connectWallet(): Promise<Web3> {
+  static async connectWallet(): Promise<Web3> {
     if (!window.ethereum) {
       throw new Error('Metamask not installed');
     }
@@ -31,7 +31,16 @@ export class Web3 {
    * Gets the wallet address.
    * @returns A promise for the wallet address.
    */
-  public async getAddress() {
+  async getAddress() {
     return await this.signer.getAddress();
+  }
+
+  async sign(message: string) {
+    return await this.signer.signMessage(message);
+  }
+
+  async signAndKeccak256(message: string) {
+    const signature = await this.sign(message);
+    return ethers.getBytes(ethers.keccak256(signature));
   }
 }

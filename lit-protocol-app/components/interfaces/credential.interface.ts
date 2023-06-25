@@ -1,6 +1,6 @@
 export type Credential = {
   credentialName: string;
-  credentialJsonLd: string;
+  jsonLd: string;
   name: string;
   gender: string;
   country: string;

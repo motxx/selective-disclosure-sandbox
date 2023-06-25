@@ -2,9 +2,9 @@ import * as EcdsaMultikey from '@digitalbazaar/ecdsa-multikey';
 import * as ecdsaSd2023Cryptosuite from '@digitalbazaar/ecdsa-sd-2023-cryptosuite';
 import { DataIntegrityProof } from '@digitalbazaar/data-integrity';
 import jsigs from 'jsonld-signatures';
-import { unsignedCredential } from './zk-ecdsa/example/unsignedCredential';
-import { loader } from './zk-ecdsa/example/documentLoader.js';
-import { EcdsaMultikeyKeyPair } from './zk-ecdsa/types';
+import { unsignedCredential } from './credentials-ecdsa/example/unsignedCredential';
+import { loader } from './credentials-ecdsa/example/documentLoader.js';
+import { EcdsaMultikeyKeyPair } from './credentials-ecdsa/types';
 
 const { createSignCryptosuite, createDiscloseCryptosuite } =
   ecdsaSd2023Cryptosuite;
@@ -13,7 +13,7 @@ const {
   purposes: { AssertionProofPurpose },
 } = jsigs;
 
-export class ZK {
+export class CredentialsECDSA {
   private documentLoader: any;
 
   constructor(private keyPair: any) {

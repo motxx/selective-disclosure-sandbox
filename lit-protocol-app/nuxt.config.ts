@@ -1,7 +1,7 @@
 import path from 'path';
 import { nodePolyfills } from 'vite-plugin-node-polyfills';
 import StringPlugin from 'vite-plugin-string';
-// https://nuxt.com/docs/api/configuration/nuxt-config
+
 export default defineNuxtConfig({
   ssr: false,
   vite: {

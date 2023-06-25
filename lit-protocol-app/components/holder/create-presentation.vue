@@ -1,26 +1,26 @@
 <script setup lang="ts">
 import { Credential } from '~/components/interfaces/credential.interface';
-import { Holder } from '~/usecase/holder';
+import * as holder from '~/usecase/holder';
 
-defineProps<{
+const props = defineProps<{
   credential: Credential;
 }>();
 
 const discloseOptions = ['Deny', 'Allow'];
-
 const presentation = ref('');
 const nameDisclosure = ref('Deny');
 const genderDisclosure = ref('Deny');
 const countryDisclosure = ref('Deny');
 
-const holder = new Holder();
+const verifierAddress = ref('0xc9dEECD767301257d7533bc816945F23dbEE7B5e');
 
 const createPresentation = async () => {
-  const res = await holder.createPresentation(
-    nameDisclosure.value === 'Allow',
-    genderDisclosure.value === 'Allow',
-    countryDisclosure.value === 'Allow',
-  );
+  const res = await holder.createPresentation(verifierAddress.value, {
+    credentialName: props.credential.credentialName,
+    nameDisclosure: nameDisclosure.value === 'Allow',
+    genderDisclosure: genderDisclosure.value === 'Allow',
+    countryDisclosure: countryDisclosure.value === 'Allow',
+  });
   if (res) {
     presentation.value = JSON.stringify(res, null, 4);
   }
@@ -30,14 +30,27 @@ const createPresentation = async () => {
   <h2
     class="text-2xl md:text-3xl font-extrabold text-gray-800 mb-4 md:mb-8 tracking-tight"
   >
-    Step2. Create Verifiable Presentation
+    Create Verifiable Presentation
   </h2>
 
   <!-- VC ACL -->
   <div class="w-full max-w-lg flex flex-col">
-    <span class="mb-8">1. Select columns allowed to disclose.</span>
     <div class="flex flex-wrap -mx-3 mb-6">
       <div class="w-full px-3 mb-6 md:mb-0">
+        <label
+          class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+          for="grid-verifierAddress"
+        >
+          Verifier Address
+        </label>
+        <input
+          class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+          id="grid-verifier-address"
+          type="text"
+          placeholder="Enter verifier address"
+          v-model="verifierAddress"
+        />
+        <hr class="h-px my-8 bg-gray-200 border-0" />
         <label
           class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
           for="grid-username"
@@ -186,6 +199,7 @@ const createPresentation = async () => {
       <div class="w-full px-3">
         <button
           class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          :disabled="!verifierAddress"
           @click="createPresentation"
         >
           Create Presentation
