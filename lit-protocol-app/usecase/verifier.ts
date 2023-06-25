@@ -1,9 +1,9 @@
 export class Verifier {
   createPresentation = async () => {
-    return "presentation created";
+    return 'presentation created';
   };
 
   execute = async () => {
-    console.log("dApp executed");
+    console.log('dApp executed');
   };
 }

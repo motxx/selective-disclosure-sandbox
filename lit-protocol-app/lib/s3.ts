@@ -1,5 +1,5 @@
 import AWS, { AWSError, S3 } from 'aws-sdk';
-import { EncryptedText } from './constants';
+import { EncryptedText } from './types/encryption';
 import { deserialize, serialize } from './utils';
 
 const s3 = new AWS.S3({

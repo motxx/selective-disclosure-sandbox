@@ -3,7 +3,7 @@ import {
   EncryptedText,
   createAccessControlConditions,
   chain,
-} from './constants';
+} from './types/encryption';
 
 class Lit {
   public litNodeClient;

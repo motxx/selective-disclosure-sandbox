@@ -1,4 +1,4 @@
-import { BbsBlsSignature } from '~/lib/zk-bbs/bbs-bls-signature';
+import { BbsBlsSignature } from 'lib/credentials-bbs/bbs-bls-signature';
 
 export class Holder {
   credential: object | null = null;
