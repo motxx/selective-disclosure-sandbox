@@ -1,8 +1,9 @@
 import * as data from './data';
 import { KeyPairOptions } from '@mattrglobal/jsonld-signatures-bbs';
 
+// 本来オンライン上のDIDドキュメントから引っ張ってくる
 const documents: { [key: string]: object | string } = {
-  'did:example:489398593#test': data.keyPairOptions,
+  // 'did:example:489398593#test': data.keyPairOptions,
   'did:example:489398593': data.exampleControllerDoc,
   'https://w3id.org/security/bbs/v1': data.bbsContext,
   'https://w3id.org/citizenship/v1': data.citizenVocab,
@@ -19,6 +20,20 @@ const customDocLoader = (url: string): any => {
       document: context,
       documentUrl: url,
     };
+  }
+
+  // TODO: DIDDocumentのストレージから取得する
+  if (url === 'did:example:489398593#test') {
+    const serializedValue = window.localStorage.getItem(
+      'issuer-keypair-options',
+    );
+    if (serializedValue) {
+      return {
+        contextUrl: null,
+        document: serializedValue,
+        documentUrl: url,
+      };
+    }
   }
 
   const errorMessage = `Attempted to remote load context : '${url}', please cache instead`;

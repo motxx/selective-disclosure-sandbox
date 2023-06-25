@@ -21,7 +21,7 @@ export const createPresentation = async (
     genderDisclosure,
     countryDisclosure,
   );
-  console.log(presentation);
+  console.log('Presentation', presentation);
   return presentation;
 };
 
