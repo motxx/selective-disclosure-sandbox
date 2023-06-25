@@ -44,9 +44,6 @@ export class BbsBlsSignature {
   }
 
   async signDocument(inputDocument: object, keyPairOptions: KeyPairOptions) {
-    console.log('Input document');
-    console.log(JSON.stringify(inputDocument, null, 2));
-
     return this.JsonLd.sign(inputDocument, {
       suite: new this.BbsBls.BbsBlsSignature2020({
         key: this.getBlsKeyPair(keyPairOptions),
